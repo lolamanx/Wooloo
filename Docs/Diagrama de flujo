@@ -1,0 +1,151 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Página-1" id="sbOgUu0_02dVZUYM1vhm">
+    <mxGraphModel grid="0" page="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Pantalla Principal: Inicio y Rutas&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="-20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-2" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" x="0.5" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="270" />
+            </Array>
+            <mxPoint x="360" y="690" as="sourcePoint" />
+            <mxPoint x="40" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-3" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="40" y="160" as="sourcePoint" />
+            <mxPoint x="120" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Mis Viajes Guardados&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="120" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-5" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="240" y="160" as="sourcePoint" />
+            <mxPoint x="310" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Historial y Acceso a Itinerarios Activos&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-7" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="40" y="280" as="sourcePoint" />
+            <mxPoint x="120" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Crear Nuevo Viaje&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="120" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-9" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="240" y="280" as="sourcePoint" />
+            <mxPoint x="320" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Definición de Origen y Destino&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="320" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-11" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="440" y="280" as="sourcePoint" />
+            <mxPoint x="510" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Configuración de Fecha, Hora y Margen de Tiempo Extra&#xa;&#xa;" vertex="1">
+          <mxGeometry height="70" width="120" x="510" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-14" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="310" as="sourcePoint" />
+            <mxPoint x="180" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Configuración de Paradas de Ruta&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="120" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-16" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-15" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=1.028;exitY=0.511;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="4Nv0QL8Pq5ozwVC9OCiX-17" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="240" y="410" as="sourcePoint" />
+            <mxPoint x="310" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-26" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;defaultLabelBackgroundColor=page;" target="4Nv0QL8Pq5ozwVC9OCiX-19" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Permanencia en Lugar&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Catálogo de Atractivos Sugeridos&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="590" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-20" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-17" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="440" as="sourcePoint" />
+            <mxPoint x="420" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Gestión de Desvíos&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-22" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-17" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=1.008;exitY=0.564;exitDx=0;exitDy=0;entryX=-0.018;entryY=0.569;entryDx=0;entryDy=0;" target="4Nv0QL8Pq5ozwVC9OCiX-18" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="440" as="sourcePoint" />
+            <mxPoint x="420" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-32" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="420" as="sourcePoint" />
+            <mxPoint x="180" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa; Itinerario de Ruta&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="120" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-34" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-33" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=1.025;exitY=0.511;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="4Nv0QL8Pq5ozwVC9OCiX-35" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="230" y="490.5" as="sourcePoint" />
+            <mxPoint x="300" y="489.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-35" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Indicadores de Viaje &#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-37" edge="1" parent="1" source="4Nv0QL8Pq5ozwVC9OCiX-35" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="430" y="500" as="sourcePoint" />
+            <mxPoint x="450" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-38" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Cronología Interactiva Paso a Paso&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-39" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="520" as="sourcePoint" />
+            <mxPoint x="180" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa;Modo Navegación en Vivo&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="120" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-41" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="240" y="580" as="sourcePoint" />
+            <mxPoint x="310" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4Nv0QL8Pq5ozwVC9OCiX-42" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;" value="&#xa; Monitoreo en Ruta y Horas Estimadas Dinámicas&#xa;&#xa;" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="555" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
