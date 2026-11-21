@@ -35,9 +35,3 @@ Desde `backend/`, ejecuta `npm.cmd run demo` y abre el [monitor Android](http://
 - **Comprobación.** Cuando Wooloo abra, el monitor debe mostrar `GET /api/trips → 200`. Para probar Catálogo o repetir el recorrido de Viajes, importa la colección en Postman. Para `npm start`, cambia `baseUrl` a `http://127.0.0.1:3000`.
 
 Consulta la [guía de siete minutos](docs/GUIA_PRESENTACION.md) para saber qué decir y qué mostrar en cada paso.
-
-## Antes de subir
-
-Completa los nombres o usuarios GitHub en la portada y el tamaño real del equipo en la decisión de arquitectura. Vuelve a exportar el PDF si editas el informe. Ensaya una instalación en un segundo computador y registra el resultado real. El ensayo en un teléfono conectado al PC valida el cliente móvil, mientras que el ensayo en otro computador verifica la reproducibilidad del entorno. Comparte el repositorio con el docente.
-
-Para volver a generar el PDF desde los archivos Markdown, instala ReportLab en tu entorno Python y ejecuta `python docs/exportar_pdf.py` desde la raíz.
