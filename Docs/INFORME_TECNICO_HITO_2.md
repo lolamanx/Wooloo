@@ -6,94 +6,94 @@ Universidad Mayor · Escuela de Ingeniería Civil
 INGT1003 · Arquitectura de Desarrollo (Móvil y Web)  
 Segundo semestre de 2026 · Santiago, Chile
 
-**Equipo:** Wooloo  
-**Integrantes e identificadores GitHub:** [Completar por el equipo]  
-**Docente:** Carlos Muñoz S.  
-**Fecha:** 21 de noviembre de 2026
+**Francisco Lizama** · GitHub @Kamisama-all  
+**Victor Vejar** · GitHub @lolamanx  
+**Docente** · Carlos Muñoz S.  
+**Fecha** · 21 de noviembre de 2026
 
 <!-- pagina -->
 ## Índice
 
-| Sección | Página |
-| --- | --- |
-| 1. Introducción y cambios desde el Hito 1 | 2 |
-| 2. Contrato de la interfaz HTTP | 3 |
-| 3. Cuerpos de ejemplo y validaciones | 4 |
-| 4. Capas y decisión de arquitectura | 5 |
-| 5. Modelo de datos, configuración y persistencia | 6 |
-| 6. Verificación, conclusión y bibliografía | 7 |
+1. Introducción y cambios desde el Hito 1 · pág. 2
+2. Contrato HTTP y ejemplos · págs. 3–4
+3. Modelo de datos y configuración · pág. 5
+4. Capas y decisión de arquitectura · pág. 6
+5. Verificación, demostración y referencias · pág. 7
 
 ## 1. Introducción y cambios desde el Hito 1
 
-Wooloo permite planificar un viaje por Chile con un destino y paradas intermedias. El Hito 2 agrega una API REST que administra viajes y ubicaciones de catálogo. El cliente Android en modo debug puede guardar y recuperar viajes del servidor durante la exposición. El monitor permite seguir la interacción HTTP mientras se usa la aplicación.
+Wooloo permite organizar viajes por Chile con un destino y paradas intermedias. El Hito 2 incorpora una API REST con dos recursos, Viajes y Catálogo. El cliente Android en modo de depuración envía al servidor las operaciones de Viajes. El catálogo se administra mediante la API y se demuestra con Postman.
 
 | Aspecto | Hito 1 | Hito 2 y efecto |
 | --- | --- | --- |
-| Estado del itinerario | Viajes guardados en el dispositivo. | Una base SQLite sostiene las operaciones del servidor. Un GET recupera el viaje desde la base después de actualizarlo. |
-| Catálogo | Lugares definidos en el prototipo. | El backend expone un catálogo gestionable por API. La pantalla Android conserva sus destinos incorporados y la administración del recurso se demuestra en Postman. |
-| Separación de responsabilidades | Flujos de la interfaz y almacenamiento local. | Se introdujeron capas de HTTP, negocio y datos para validar las mismas reglas al recibir peticiones de distintos clientes. |
-| Evidencia | Recorrido navegable. | Se añadió un monitor en vivo y una colección de peticiones para demostrar estados HTTP y datos persistidos. |
+| Persistencia de viajes | Guardado local en el dispositivo. | SQLite en el servidor permite recuperar el mismo viaje después de cerrar la app o reiniciar el servicio. |
+| Catálogo | Lugares predefinidos en la interfaz. | El catálogo se gestiona mediante un segundo CRUD. La pantalla de Android conserva su catálogo incorporado. |
+| Arquitectura | Prototipo navegable en el cliente. | Express separa la entrada HTTP, las validaciones del dominio y las consultas SQL. |
+| Evidencia | Recorrido en la interfaz. | El monitor muestra las peticiones Android y Postman ejercita el contrato HTTP. |
 
-El cálculo vial y el mapa conservan sus proveedores previos. El alcance de esta API es administrar los datos del itinerario y el catálogo.
+El mapa y el cálculo de rutas siguen usando los proveedores de la aplicación. La API de Wooloo administra los itinerarios y las ubicaciones del catálogo.
 
 <!-- pagina -->
-## 2. Contrato de la interfaz HTTP
+## 2. Contrato HTTP y ejemplos
 
 <!-- contrato-tabla -->
 
 <!-- pagina -->
-## 3. Cuerpos de ejemplo y validaciones
+## Ejemplos de entrada y de error
 
 <!-- contrato-ejemplos -->
 
 <!-- pagina -->
+## 3. Modelo de datos y configuración
+
+| Entidad | Clave y tipos | Relaciones |
+| --- | --- | --- |
+| catalog_locations | key TEXT como PK. name, icon y description TEXT. lat y lng REAL. | Un lugar puede ser destino o parada en varios viajes. |
+| trips | id TEXT como PK. name, dest_key y departure_iso TEXT. created_at y updated_at DATETIME. | dest_key referencia catalog_locations.key. |
+| stops | id INTEGER como PK. trip_id y stop_key TEXT. stay_min y sequence_order INTEGER. | trip_id referencia trips.id. stop_key referencia catalog_locations.key. |
+
+Cada viaje tiene un destino y admite hasta diez paradas. El repositorio guarda el viaje y sus paradas en una transacción y revierte la escritura si falla. Borrar un viaje elimina sus paradas en cascada. Borrar una ubicación referenciada devuelve HTTP 409.
+
+El servidor ejecuta schema.sql y carga seed.sql al inicializar la base. La base queda marcada como inicializada, por lo que reiniciar el servicio conserva las eliminaciones posteriores del catálogo.
+
+La configuración usa PORT, NODE_ENV, DB_PATH y CORS_ORIGIN. La plantilla .env.example contiene valores de ejemplo. SQLite necesita una ruta de archivo y no requiere usuario ni contraseña. Los archivos de configuración local, las bases generadas y las llaves de firma quedan fuera de la entrega.
+
+El modo demo escucha en el puerto 43101 del PC y usa una base SQLite separada. En un teléfono físico, el túnel ADB dirige las peticiones al PC. El monitor muestra el método, la ruta, el estado y los cuerpos JSON de las solicitudes de Viajes.
+
+<!-- pagina -->
 ## 4. Capas y decisión de arquitectura
 
-La aplicación, la vista web y Postman consumen recursos HTTP. El servidor monta rutas en `backend/server.js`. Los controladores convierten las solicitudes en llamadas a servicios y forman la respuesta HTTP. Los servicios validan el dominio. El repositorio es el punto de acceso a SQLite.
+El cliente llama a Express. El controlador recibe la petición y forma la respuesta HTTP. El servicio aplica las reglas del dominio. El repositorio ejecuta las consultas en SQLite.
 
-**Recorrido de POST /api/trips.** Express lee el JSON. tripController invoca createTrip. tripService valida el nombre, la fecha y las referencias al catálogo, y genera el ID si corresponde. dbRepository escribe el viaje y sus paradas en una transacción. El controlador devuelve 201 con el ID y la cabecera Location. Un GET posterior vuelve a leer el estado almacenado.
+**Ejemplo POST /api/trips.** Express recibe el JSON, el controlador llama a tripService y el servicio valida el nombre, la fecha y las referencias del catálogo. dbRepository guarda el viaje y las paradas. El controlador devuelve HTTP 201 con el ID y la cabecera Location. Un GET posterior recupera los datos de la base.
 
-| Tecnología | Criterio y costo asumido |
+| Tecnología | Justificación y costo |
 | --- | --- |
-| JavaScript y Node.js | El prototipo ya usa JavaScript. Frente a incorporar otro lenguaje, compartirlo reduce el aprendizaje inicial. La entrada JSON se valida explícitamente en ejecución. |
-| Express | Rutas y middleware permiten implementar la interfaz con convenciones propias. Frente a un framework con más estructura, el equipo debe mantener las fronteras entre capas. |
-| SQLite | El archivo local y los scripts facilitaban levantar el servicio en laboratorio. Frente a PostgreSQL, SQLite permite una instalación más simple y limita las escrituras simultáneas a un escritor por base. |
+| JavaScript y Node.js | Reutilizan el lenguaje del prototipo. La entrada JSON necesita validación explícita en ejecución. |
+| Express | El ruteo y los middleware simplifican el contrato HTTP. El equipo mantiene las fronteras entre las capas. |
+| SQLite | Elimina la necesidad de operar un servidor de base de datos separado. Las escrituras concurrentes se coordinan con un solo escritor por base. |
 
-**Decisión.** Monolito en capas para un equipo de [completar número real] integrantes. Esperamos una carga de laboratorio baja, con un teléfono y un cliente de pruebas, y ráfagas de pocas escrituras. Es un escenario de diseño, sin medición de capacidad productiva. El equipo instala y opera un proceso de Node y un archivo SQLite. Un servicio distribuido añadiría despliegues, red y coordinación de datos. Revisaríamos el motor si las escrituras concurrentes empiezan a competir por el archivo y revisaríamos la separación de servicios si un componente requiere escala, despliegue o propiedad independiente.
-
-<!-- pagina -->
-## 5. Modelo de datos, configuración y persistencia
-
-| Tabla | Clave y tipos | Relación |
-| --- | --- | --- |
-| catalog_locations | key TEXT PK. name, icon y description TEXT. lat y lng REAL. | Un lugar puede ser destino o parada en varios viajes. |
-| trips | id TEXT PK. name, dest_key y departure_iso TEXT. created_at y updated_at DATETIME. | dest_key referencia catalog_locations.key. |
-| stops | id INTEGER PK. trip_id y stop_key TEXT. stay_min y sequence_order INTEGER. | trip_id referencia trips.id. stop_key referencia catalog_locations.key. |
-
-**Cardinalidad.** catalog_locations 1 → 0..N trips como destino. trips 1 → 0..N stops, con un máximo de diez aplicado por el servicio. catalog_locations 1 → 0..N stops como ubicación.
-
-SQLite aplica claves foráneas. Borrar un viaje elimina sus paradas. Borrar un lugar referenciado devuelve 409. El repositorio ejecuta en una transacción la escritura de un viaje y sus paradas. Los scripts schema.sql y seed.sql permiten inicializar la base. La carga automática queda marcada para conservar las eliminaciones al reiniciar.
-
-El servicio carga PORT, NODE_ENV, DB_PATH y CORS_ORIGIN desde entorno o backend/.env. La plantilla de raíz contiene valores de ejemplo. SQLite local no necesita usuario ni contraseña. El repositorio excluye la configuración local, las bases generadas, los datos de firma y las dependencias instaladas.
-
-La demo escucha en 127.0.0.1:43101 y usa una base distinta. Android debug se conecta por ADB reverse en el teléfono físico y mediante la pasarela del emulador en un AVD. El monitor muestra las solicitudes de viajes etiquetadas por Android. Usar datos ficticios durante la presentación mantiene el contenido proyectado acorde al ensayo.
+**Decisión.** Francisco y Victor integran un equipo de dos personas. La carga prevista para el laboratorio es baja, con un teléfono y un cliente de pruebas, sin una estimación de capacidad productiva. El monolito reduce el despliegue a un proceso Node y un archivo SQLite. Distribuir el sistema implicaría operar más procesos y coordinar cambios entre servicios. El equipo revisaría SQLite si las escrituras simultáneas se vuelven un cuello de botella y reconsideraría la separación del servicio si un componente necesitara escalar o desplegarse por su cuenta.
 
 <!-- pagina -->
-## 6. Verificación, conclusión y bibliografía
+## 5. Verificación, demostración y referencias
 
-**Pruebas.** La integración HTTP verifica ambos CRUD, consultas de cambios, entradas inválidas, conflictos de integridad, borrado y persistencia al reiniciar SQLite. La demostración Android confirmó el recorrido CRUD en un emulador y la consulta inicial por Wi-Fi desde un teléfono físico. Se entrega una colección Postman y un guion para el ensayo. La instalación en otro computador queda pendiente de registro.
+Se verificaron ambos CRUD, validación de entradas, conflictos, borrado y persistencia después de reiniciar. La colección incluye 14 solicitudes comprobadas contra HTTP local. El flujo de Android se ensayó en un emulador y se confirmó la consulta inicial desde un teléfono físico por Wi-Fi. Queda por documentar un ensayo de instalación en un segundo computador.
 
-**Conclusión.** La API aporta dos recursos persistentes con contrato explícito y capas separadas. La demostración muestra un viaje guardado mediante la app y el mantenimiento de una ubicación mediante Postman.
+**Demostración.** En Android se crea un viaje a Osorno, se agrega Chillán, se recupera el mismo viaje y se elimina. El monitor permite mostrar cada estado HTTP y el dato persistido. La carpeta Catálogo de Postman crea, consulta, modifica y borra una ubicación ficticia. La explicación de decisiones cierra la exposición.
 
-## Bibliografía
+**Apoyo de IA.** Se usó Codex para apoyar la implementación, las pruebas y la redacción. El equipo revisa el funcionamiento y el contenido antes de la entrega.
 
-- Fielding, R., Nottingham, M., y Reschke, J. (2022). HTTP Semantics (RFC 9110). RFC Editor. https://www.rfc-editor.org/rfc/rfc9110.html
+**Conclusión.** Wooloo dispone de dos recursos CRUD con un contrato común, persistencia relacional y una demostración que conecta las acciones del teléfono con las respuestas del servidor.
+
+### Referencias
+
+- Fielding, R., Nottingham, M., y Reschke, J. (2022). HTTP Semantics (RFC 9110). https://www.rfc-editor.org/rfc/rfc9110.html
 - Node.js. (s. f.). Introduction to Node.js. https://nodejs.org/en/learn/getting-started/introduction-to-nodejs
 - Express. (s. f.). Routing. https://expressjs.com/en/guide/routing.html
 - SQLite. (s. f.). Appropriate uses for SQLite. https://sqlite.org/whentouse.html
 - SQLite. (s. f.). SQLite foreign key support. https://sqlite.org/foreignkeys.html
-- Android Developers. (s. f.). Access a local development server from WebView. https://developer.android.com/develop/ui/views/layout/webapps/access-local-server
 
-## Anexos en el repositorio
+### Anexos del proyecto
 
-Contrato HTTP independiente en docs, modelo y scripts en db, colección en backend/postman_collection.json, pruebas en backend/tests y guía de exposición en docs.
+Contrato de la API, colección Postman, modelo relacional, scripts SQL y pruebas de integración.
