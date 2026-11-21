@@ -1,0 +1,20 @@
+:root { font-family: system-ui, sans-serif; color: #172e30; background: #eef5f2; }
+body { max-width: 1120px; margin: auto; padding: 24px; }
+header { background: #153e3b; color: white; padding: 24px 32px; border-radius: 16px; }
+header p, h1 { margin: 0 0 6px; }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+main { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 20px; margin-top: 20px; align-items: start; }
+section { background: white; padding: 22px; border-radius: 16px; }
+.monitor { margin-top: 20px; }
+h2 { margin-top: 0; }
+label { display: grid; gap: 6px; margin-bottom: 14px; font-weight: 600; }
+input, select, button { font: inherit; padding: 9px 12px; border-radius: 8px; border: 1px solid #849c96; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+button { background: #196153; color: white; cursor: pointer; }
+button:disabled { background: #e9efed; color: #4f6761; cursor: default; }
+#http { list-style: none; padding: 0; margin-bottom: 0; }
+details { border-top: 1px solid #d7e5df; padding: 10px 0; }
+summary { cursor: pointer; font-weight: 700; overflow-wrap: anywhere; }
+pre { padding: 10px; border-radius: 8px; background: #f0f5f3; white-space: pre-wrap; overflow-wrap: anywhere; }
+#status { overflow-wrap: anywhere; }
+@media (max-width: 720px) { main { grid-template-columns: 1fr; } body { padding: 12px; } }

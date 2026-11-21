@@ -1,0 +1,30 @@
+# ============ Android / Gradle ============
+.gradle/
+**/build/
+local.properties
+*.jks
+*.keystore
+
+# ============ Node.js / Backend ============
+node_modules/
+backend/node_modules/
+backend/db/*.db
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+__pycache__/
+
+# ============ Variables de entorno ============
+.env
+
+# ============ IDE ============
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ============ Otros ============
+.DS_Store
+Thumbs.db

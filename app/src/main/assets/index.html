@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org; connect-src 'self' https://router.project-osrm.org; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Wooloo</title>
+    <link rel="icon" type="image/png" href="brand/wooloo-icon.png" />
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="vendor/leaflet.css" />
+    <link rel="stylesheet" href="styles/app.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header de instrucciones y cumplimiento -->
+
+      <div class="workspace">
+        <!-- Panel izquierdo: Checklist y salto rápido de evaluación -->
+
+        <!-- Panel derecho: Simulación de teléfono móvil -->
+        <main class="phone-viewport">
+          <div class="phone-case">
+            <div class="phone-inner">
+              <!-- Barra superior status -->
+              <div class="phone-status-bar">
+                <span id="liveClock">10:30</span>
+                <span>Wooloo 4G 📶</span>
+              </div>
+
+              <!-- Barra navegación app -->
+              <div class="phone-nav-bar">
+                <button class="back-btn" id="mobileBackBtn" data-action="goBack()">←</button>
+                <div class="screen-title" id="mobileTitle">Mis viajes</div>
+                <button
+                  class="route-menu-button"
+                  id="routeMenuButton"
+                  data-action="toggleRouteMenu()"
+                  aria-label="Abrir paradas y opciones"
+                  aria-expanded="false"
+                  aria-controls="routeDrawer"
+                  hidden
+                >
+                  ☰
+                </button>
+              </div>
+
+              <!-- Contenido dinámico según pantalla -->
+              <div class="screen-content">
+                <!-- PANTALLA 1: INICIO DE LA APP (home móvil) -->
+                <div class="screen" id="view-trips">
+                  <header class="home-header">
+                    <div class="home-top">
+                      <div>
+                        <div class="home-brand">Wooloo</div>
+                        <div class="home-hello">Tu próxima aventura</div>
+                        <div class="home-sub">Vamos a descubrir el camino.</div>
+                      </div>
+                      <img
+                        class="home-mascot"
+                        src="brand/wooloo-mascot.png"
+                        width="116"
+                        height="116"
+                        alt="Wooloo, tu compañero de viaje"
+                      />
+                    </div>
+                    <button class="home-search" data-action="startNewTripFlow()">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="M20 20l-3.5-3.5" />
+                      </svg>
+                      <span>Planifica un nuevo destino…</span>
+                    </button>
+                  </header>
+
+                  <div class="home-body">
+                    <div id="nextTripContainer"></div>
+                    <p id="tripDeleteError" class="trip-delete-error" role="alert" hidden></p>
+
+                    <div class="section-row">
+                      <h3>Destinos populares</h3>
+                      <small>desde tu ubicación</small>
+                    </div>
+                    <div class="chips-scroll" id="destChipsContainer"></div>
+
+                    <div id="otherTripsSection">
+                      <div class="section-row">
+                        <h3>Mis viajes</h3>
+                        <small id="otherTripsCount"></small>
+                      </div>
+                      <div id="tripsListContainer"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PANTALLA 2: CONFIGURAR VIAJE -->
+                <div class="screen" id="view-newtrip">
+                  <p id="formError" class="route-status error" role="alert" hidden></p>
+                  <div class="card">
+                    <div class="wooloo-form-intro">
+                      <img src="brand/wooloo-mascot.png" width="44" height="48" alt="" />
+                      <div>
+                        <h2>Un nuevo viaje con Wooloo</h2>
+                        <p>Tú eliges el destino.</p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="tripNameInput">Nombre del Viaje</label>
+                      <input
+                        type="text"
+                        id="tripNameInput"
+                        value="Vacaciones Ruta de los Lagos"
+                        placeholder="Ej: Viaje al Sur"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Punto de partida</label>
+                      <div class="current-origin">
+                        <b>📍 Mi ubicación actual</b>
+                        <p id="tripOriginStatus" class="stop-note">
+                          Se obtiene por GPS al calcular el recorrido.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="tripDestSelect">Punto de Llegada</label>
+                      <select id="tripDestSelect"></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="tripDateInput">Fecha y Hora de Salida</label>
+                      <input type="datetime-local" id="tripDateInput" />
+                    </div>
+                  </div>
+                  <button class="btn btn-brand" data-action="commitTripAndProceed()">
+                    Continuar a Paradas ➔
+                  </button>
+                </div>
+
+                <!-- PANTALLA 3: CONFIGURAR PARADAS -->
+                <div class="screen" id="view-stops">
+                  <p id="stopsSaveError" class="route-status error" role="alert" hidden></p>
+                  <p id="stopsOriginStatus" class="origin-status" role="status">
+                    Origen: mi ubicación actual. Buscando GPS…
+                  </p>
+                  <div
+                    style="
+                      font-size: 12px;
+                      font-weight: 800;
+                      color: var(--muted);
+                      text-transform: uppercase;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Paradas seleccionadas
+                  </div>
+                  <div id="selectedStopsContainer"></div>
+
+                  <div class="card" style="margin-top: 14px">
+                    <div
+                      style="
+                        font-size: 12px;
+                        font-weight: 800;
+                        color: var(--brand);
+                        text-transform: uppercase;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      Añadir lugares recomendados
+                    </div>
+                    <p class="stop-note">
+                      Tiempo extra de conducción respecto a tu recorrido, sin incluir la estadía.
+                    </p>
+                    <div id="catalogStopsContainer"></div>
+                    <button
+                      id="detourRetry"
+                      class="btn btn-outline"
+                      data-action="refreshDetours()"
+                      hidden
+                    >
+                      Reintentar tiempos de desvío
+                    </button>
+                  </div>
+
+                  <button
+                    class="btn btn-brand"
+                    style="margin-top: 6px"
+                    data-action="calculateAndShowItinerary()"
+                  >
+                    Ver mapa del recorrido ➔
+                  </button>
+                </div>
+
+                <!-- PANTALLA 4: ITINERARIO COMPLETO -->
+                <div class="screen" id="view-itinerary">
+                  <div class="map-shell">
+                    <div id="arrivalPanel" class="arrival-panel" hidden>
+                      <b id="arrivalText"></b
+                      ><button
+                        class="btn btn-brand"
+                        id="arrivalButton"
+                        data-action="confirmVisit()"
+                      >
+                        Confirmar visita y continuar
+                      </button>
+                    </div>
+                    <div
+                      id="routeMap"
+                      role="region"
+                      aria-label="Mapa de la ruta y ubicación actual"
+                    ></div>
+                    <div class="map-tools">
+                      <button
+                        id="centerButton"
+                        data-action="centerOnUser()"
+                        aria-label="Centrar en mi ubicación"
+                        title="Centrar en mi ubicación"
+                        aria-pressed="false"
+                        aria-busy="false"
+                      >
+                        <svg
+                          class="app-icon"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
+                          <circle cx="12" cy="12" r="7" />
+                          <circle cx="12" cy="12" r="2" class="icon-dot" />
+                          <path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
+                        </svg>
+                      </button>
+                      <button
+                        id="overviewButton"
+                        data-action="fitRoute()"
+                        aria-label="Ver recorrido completo"
+                        title="Ver recorrido completo"
+                      >
+                        <svg
+                          class="app-icon"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
+                          <circle cx="5" cy="18" r="2" />
+                          <path d="M7 18h7a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h7" />
+                          <path d="m14 1 4 1-1 4" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="gps-chip" id="gpsLabel">GPS sin activar</div>
+                    <div id="routeRecovery" class="route-recovery" hidden>
+                      <button class="btn btn-outline" data-action="retryRoute()">
+                        Reintentar cálculo
+                      </button>
+                    </div>
+                  </div>
+                  <div class="direction-card" id="directionCard">
+                    <img
+                      id="routeMascot"
+                      class="route-mascot"
+                      src="brand/wooloo-mascot.png"
+                      width="36"
+                      height="42"
+                      alt=""
+                      hidden
+                    />
+                    <span class="turn-arrow" id="turnArrow" aria-hidden="true">↗</span>
+                    <div>
+                      <small id="turnDistance">TU RECORRIDO</small
+                      ><strong id="turnInstruction">Calculando por carreteras…</strong
+                      ><span id="nextTarget"></span>
+                      <p id="routeNotice" class="route-notice" role="status" hidden></p>
+                    </div>
+                  </div>
+                  <div class="route-metrics">
+                    <div><strong id="routeKm">—</strong><span>km restantes</span></div>
+                    <div>
+                      <strong id="routeTime">—</strong
+                      ><span title="Tiempo estimado con estadías pendientes">Tiempo total</span>
+                    </div>
+                    <div>
+                      <strong id="routeEta">—</strong
+                      ><span title="Llegada estimada con estadías pendientes">Llegada</span>
+                    </div>
+                  </div>
+
+                  <div class="route-actions">
+                    <button
+                      class="btn btn-outline"
+                      id="locationButton"
+                      data-action="centerOnUser()"
+                      aria-label="Centrar en mi ubicación"
+                      aria-pressed="false"
+                      aria-busy="false"
+                    >
+                      <svg
+                        class="app-icon"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <circle cx="12" cy="12" r="7" />
+                        <circle cx="12" cy="12" r="2" class="icon-dot" />
+                        <path d="M12 2v3m0 14v3M2 12h3m14 0h3" /></svg
+                      ><span>Mi ubicación</span>
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      id="startButton"
+                      data-action="startNavigation()"
+                    >
+                      Iniciar ruta ▶
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      id="pauseButton"
+                      data-action="pauseNavigation()"
+                      hidden
+                    >
+                      Pausar ruta
+                    </button>
+                  </div>
+                </div>
+
+                <!-- PANTALLA 5: DETALLE DE UNA PARADA -->
+                <div class="screen" id="view-detail">
+                  <div id="stopDetailContainer"></div>
+                  <button
+                    class="btn btn-outline"
+                    style="margin-top: 10px"
+                    data-action="navTo('itinerary')"
+                  >
+                    Volver al Itinerario
+                  </button>
+                </div>
+              </div>
+
+              <!-- Navegación compartida entre viajes y mapa -->
+              <nav class="tabbar" aria-label="Navegación principal">
+                <button
+                  id="tripsTab"
+                  class="tab-item active"
+                  data-action="switchMainTab('trips')"
+                  aria-current="page"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="7" width="18" height="13" rx="3" />
+                    <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                    <path d="M3 13h18" />
+                  </svg>
+                  <span>Viajes</span>
+                </button>
+                <button
+                  class="tab-fab"
+                  data-action="startNewTripFlow()"
+                  aria-label="Crear un nuevo viaje"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.6"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+                <button id="mapTab" class="tab-item" data-action="switchMainTab('itinerary')">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 11l18-8-8 18-2-8-8-2z" />
+                  </svg>
+                  <span>Mapa</span>
+                </button>
+              </nav>
+
+              <p id="tripFeedback" class="sr-only" role="status"></p>
+              <div id="drawerLayer" class="drawer-layer" hidden>
+                <button
+                  class="drawer-scrim"
+                  data-action="closeRouteMenu()"
+                  aria-label="Cerrar menú"
+                ></button>
+                <aside
+                  id="routeDrawer"
+                  class="route-drawer"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="drawerTitle"
+                  tabindex="-1"
+                >
+                  <header class="drawer-header">
+                    <div class="drawer-brand">
+                      <img src="brand/wooloo-mascot.png" width="34" height="38" alt="" />
+                      <h2 id="drawerTitle">Tu recorrido</h2>
+                    </div>
+                    <button
+                      id="drawerClose"
+                      data-action="closeRouteMenu()"
+                      aria-label="Cerrar menú"
+                    >
+                      ✕
+                    </button>
+                  </header>
+                  <p id="routeStatus" class="drawer-status" role="status">Preparando mapa…</p>
+                  <section class="route-details">
+                    <h3>Paradas <span id="stopCount"></span></h3>
+                    <ol id="routeStops"></ol>
+                    <button class="btn btn-outline" data-action="navTo('stops')">
+                      Modificar paradas
+                    </button>
+                  </section>
+                  <section class="drawer-section">
+                    <h3>Capas del mapa</h3>
+                    <p class="map-legend">
+                      <span class="legend-original"></span> Ruta original
+                      <span class="legend-active"></span> Guía actual
+                    </p>
+                    <button class="btn btn-outline btn-with-icon" data-action="showRouteOverview()">
+                      <svg
+                        class="app-icon"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <circle cx="5" cy="18" r="2" />
+                        <path d="M7 18h7a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h7" />
+                        <path d="m14 1 4 1-1 4" /></svg
+                      ><span>Ver recorrido completo</span>
+                    </button>
+                  </section>
+                  <details class="drawer-section">
+                    <summary>Mapa, privacidad y créditos</summary>
+                    <p class="service-note">
+                      Cartografía ©
+                      <a href="https://www.openstreetmap.org/copyright"
+                        >OpenStreetMap contributors</a
+                      >. Mapa con Leaflet, rutas OSRM. Requiere internet. Estimaciones sin tráfico
+                      ni cierres en vivo. GPS con la app visible. Para calcular desde tu ubicación o
+                      recalcular se envía tu posición a OSRM; no guardamos tu historial GPS.
+                      Servidores públicos de evaluación.
+                    </p>
+                  </details>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="vendor/leaflet.js"></script>
+    <script src="config.js"></script>
+    <script src="route-engine.js"></script>
+    <script src="routing-client.js"></script>
+    <script src="trip-list.js"></script>
+    <script src="core/catalog.js"></script>
+    <script src="core/formatters.js"></script>
+    <script src="domain/trip-model.js"></script>
+    <script src="core/app-state.js"></script>
+    <script src="domain/trip-repository.js"></script>
+    <script src="ui/home-screen.js"></script>
+    <script src="controllers/trip-controller.js"></script>
+    <script src="ui/trip-form.js"></script>
+    <script src="ui/stops-screen.js"></script>
+    <script src="controllers/stop-controller.js"></script>
+    <script src="ui/place-detail.js"></script>
+    <script src="ui/screen-router.js"></script>
+    <script src="ui/map-view.js"></script>
+    <script src="services/road-service.js"></script>
+    <script src="services/detour-service.js"></script>
+    <script src="ui/route-menu.js"></script>
+    <script src="ui/navigation-presenter.js"></script>
+    <script src="controllers/route-controller.js"></script>
+    <script src="controllers/location-controller.js"></script>
+    <script src="platform/location-events.js"></script>
+    <script src="ui/action-dispatcher.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

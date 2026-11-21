@@ -1,0 +1,18 @@
+{
+  "name": "wooloo-backend",
+  "version": "0.10.0",
+  "description": "Backend API REST en capas para Wooloo (Ruta Viajera) - Hito 2 INGT1003 Universidad Mayor",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "demo": "node demo/start.js",
+    "test": "node --test tests/api.test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}

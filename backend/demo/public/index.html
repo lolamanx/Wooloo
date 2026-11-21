@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wooloo · Demo del Hito 2</title>
+  <link rel="stylesheet" href="demo.css">
+  <script defer src="demo.js"></script>
+</head>
+<body>
+  <header><p>INGT1003 · Hito 2</p><h1>Wooloo</h1><p>Planifica un viaje y sigue su recorrido por la API.</p></header>
+  <main>
+    <section aria-labelledby="trip-title">
+      <h2 id="trip-title">Planificador de viajes</h2>
+      <form id="trip">
+        <label>Nombre del viaje<input id="name" maxlength="120" required value="Ruta al sur"></label>
+        <label>Destino<select id="destination" required></select></label>
+        <p id="guide">Crea un viaje para comenzar.</p>
+        <div class="actions">
+          <button id="create" type="submit" value="create">Crear viaje</button>
+          <button id="read" type="button">Consultar viaje</button>
+          <button id="update" type="submit" value="update">Guardar cambios</button>
+          <button id="remove" type="button">Borrar viaje</button>
+          <button id="check" type="button">Comprobar borrado</button>
+        </div>
+      </form>
+      <p id="status" role="status"></p>
+    </section>
+    <section aria-labelledby="http-title">
+      <h2 id="http-title">Solicitudes HTTP en vivo</h2>
+      <p>Cliente web → Express → SQLite</p>
+      <ol id="http"></ol>
+    </section>
+  </main>
+</body>
+</html>
