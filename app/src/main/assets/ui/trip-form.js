@@ -5,7 +5,47 @@
 
 "use strict";
 
+let tripFormSaving = false;
+let tripDraftId = null;
+
+function clearTripFormError() {
+  ui("formError").hidden = true;
+  for (const id of ["tripNameInput", "tripDestSelect", "tripDateInput"]) {
+    ui(id).removeAttribute("aria-invalid");
+    ui(id).removeAttribute("aria-describedby");
+  }
+}
+
+function showTripFormError(message, field) {
+  ui("formError").textContent = message;
+  ui("formError").hidden = false;
+  if (field) {
+    ui(field).setAttribute("aria-invalid", "true");
+    ui(field).setAttribute("aria-describedby", "formError");
+    ui(field).focus();
+  }
+}
+
+function setTripFormSaving(saving) {
+  tripFormSaving = saving;
+  ui("tripSaveStatus").textContent = saving ? "Guardando tu viaje…" : "";
+  ui("tripSaveStatus").hidden = !saving;
+  for (const id of [
+    "tripNameInput",
+    "tripDestSelect",
+    "tripDateInput",
+    "saveTripButton",
+    "mobileBackBtn",
+  ]) {
+    ui(id).disabled = saving;
+  }
+}
+
 function renderNewTripForm() {
+  clearTripFormError();
+  setTripFormSaving(false);
+  tripDraftId = null;
+  ui("tripNameInput").value = "";
   const destSelect = document.getElementById("tripDestSelect");
   destSelect.innerHTML = "";
 

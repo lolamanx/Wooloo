@@ -1,0 +1,14 @@
+WOOLOO · PRUEBA EN OTRO COMPUTADOR
+=================================
+
+Entrega el ZIP y la guía GRABAR-PRUEBA-HITO-3.txt a quien hará el ensayo.
+Pídele que instale, arranque y recorra el flujo sin ayuda verbal.
+
+Equipo y versión de Windows:
+Fecha y versión de Node (node -v):
+El iniciador encontró o instaló las dependencias:
+GET http://127.0.0.1:43101/health:
+Consulta Android GET /api/trips:
+Viaje y parada visibles al cerrar y reabrir la app:
+Error de guardado, conservación de campos y reintento:
+Falla encontrada y cambio necesario en el manual:

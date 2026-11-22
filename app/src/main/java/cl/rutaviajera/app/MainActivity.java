@@ -18,6 +18,7 @@ import org.json.JSONObject;
 public final class MainActivity extends Activity {
     private WebView webView;
     private ForegroundLocationController locationController;
+    private DemoTripsBridge demoTripsBridge;
     private boolean foreground;
 
     @SuppressLint("AddJavascriptInterface")
@@ -30,7 +31,10 @@ public final class MainActivity extends Activity {
         SecureWebViewClient.configure(webView);
         webView.setWebViewClient(new SecureWebViewClient(this));
         webView.addJavascriptInterface(new LocationBridge(), "AndroidLocation");
-        if (BuildConfig.DEBUG) webView.addJavascriptInterface(new DemoTripsBridge(), "AndroidDemoTrips");
+        if (BuildConfig.DEBUG) {
+            demoTripsBridge = new DemoTripsBridge(this::dispatchTripResponse);
+            webView.addJavascriptInterface(demoTripsBridge, "AndroidDemoTrips");
+        }
         FrameLayout root = createViewport();
         setContentView(root);
         root.requestApplyInsets();
@@ -117,6 +121,19 @@ public final class MainActivity extends Activity {
         }
     }
 
+    private void dispatchTripResponse(int requestId, String response) {
+        runOnUiThread(() -> {
+            try {
+                JSONObject detail = new JSONObject();
+                detail.put("requestId", requestId);
+                detail.put("response", response);
+                dispatch("nativeTripResponse", detail);
+            } catch (JSONException ignored) {
+                // La interfaz puede reintentar si se agota el plazo.
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -142,6 +159,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         locationController.stopLocation();
+        if (demoTripsBridge != null) demoTripsBridge.close();
         if (webView != null) {
             webView.removeJavascriptInterface("AndroidLocation");
             if (BuildConfig.DEBUG) webView.removeJavascriptInterface("AndroidDemoTrips");

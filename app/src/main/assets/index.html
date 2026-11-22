@@ -84,6 +84,18 @@
                   </header>
 
                   <div class="home-body">
+                    <div id="tripListNotice" class="card" hidden>
+                      <p id="tripListMessage" role="status"></p>
+                      <button
+                        id="retryTripList"
+                        class="btn btn-outline"
+                        data-action="refreshSavedTrips()"
+                        type="button"
+                        hidden
+                      >
+                        Reintentar
+                      </button>
+                    </div>
                     <div id="nextTripContainer"></div>
                     <p id="tripDeleteError" class="trip-delete-error" role="alert" hidden></p>
 
@@ -106,6 +118,7 @@
                 <!-- PANTALLA 2: CONFIGURAR VIAJE -->
                 <div class="screen" id="view-newtrip">
                   <p id="formError" class="route-status error" role="alert" hidden></p>
+                  <p id="tripSaveStatus" class="route-status" role="status" hidden></p>
                   <div class="card">
                     <div class="wooloo-form-intro">
                       <img src="brand/wooloo-mascot.png" width="44" height="48" alt="" />
@@ -119,7 +132,7 @@
                       <input
                         type="text"
                         id="tripNameInput"
-                        value="Vacaciones Ruta de los Lagos"
+                        aria-required="true"
                         placeholder="Ej: Viaje al Sur"
                       />
                     </div>
@@ -141,8 +154,13 @@
                       <input type="datetime-local" id="tripDateInput" />
                     </div>
                   </div>
-                  <button class="btn btn-brand" data-action="commitTripAndProceed()">
-                    Continuar a Paradas ➔
+                  <button
+                    id="saveTripButton"
+                    class="btn btn-brand"
+                    data-action="commitTripAndProceed()"
+                    type="button"
+                  >
+                    Guardar y continuar ➔
                   </button>
                 </div>
 

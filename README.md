@@ -1,43 +1,39 @@
-# Wooloo · Entrega del Hito 2
+# Wooloo · Hito 3
 
-Sube el **contenido de esta carpeta** como raíz de la rama principal del repositorio del curso. Verifica que el docente tenga acceso. El informe oficial está en [docs/INFORME_TECNICO_HITO_2.pdf](docs/INFORME_TECNICO_HITO_2.pdf). Su fuente editable está en la misma carpeta.
+Wooloo permite planificar viajes por Chile con un destino y paradas. La versión evaluada usa Android **debug**, una API Express y SQLite. El flujo principal consiste en guardar un viaje a Osorno, añadir Chillán, cerrar la aplicación y recuperar el mismo itinerario al abrirla de nuevo.
 
-| Ubicación | Qué contiene |
-| --- | --- |
-| `backend/` | API en Express, configuración, dependencias fijadas, pruebas y monitor HTTP. |
-| `backend/db/` | Scripts SQL que ejecuta el servidor para inicializar SQLite. |
-| `db/` | Modelo, esquema y datos iniciales en la ubicación que pide la pauta. |
-| `docs/` | Informe PDF, fuente editable, contrato REST y guía de presentación. |
-| `backend/postman_collection.json` | Colección con los dos recorridos CRUD y comprobaciones de errores. |
-| `.env.example` | Plantilla raíz. El backend lee la copia local `backend/.env`. |
-| `app/`, `gradle/` y archivos Gradle de raíz | Proyecto Android para abrir en Android Studio y ejecutar en variante debug. |
+**Equipo:** Francisco Lizama (@Kamisama-all) y Victor Vejar (@lolamanx). Universidad Mayor · INGT1003.
 
-## Levantar y probar en Windows
+## Ejecutar la demo
 
-Abre PowerShell en la raíz de esta entrega. Se requiere Node.js con npm. Se comprobó la API con Node.js 26. Para Android se usaron JDK 17 y SDK 35.
+En el portable de Windows, extrae todo el ZIP, conecta y desbloquea el teléfono y ejecuta `WOOLOO-DEMO.cmd`. El iniciador prepara el servidor, establece el túnel de ADB, abre el APK incluido y duplica la pantalla con scrcpy. El monitor está en [127.0.0.1:43101/demo/android.html](http://127.0.0.1:43101/demo/android.html).
 
-```powershell
-if (-not (Test-Path .\backend\.env)) { Copy-Item .\.env.example .\backend\.env }
-Set-Location .\backend
-npm.cmd ci
-npm.cmd test
-npm.cmd start
-```
+Si instalas desde el código del repositorio, usa Android Studio con la variante debug. Desde `backend/`, ejecuta `npm ci`, `npm test` y `npm run demo`. El [manual de uso e instalación](docs/MANUAL-USO-INSTALACION.md) explica los requisitos, el túnel ADB y la configuración de ejemplo.
 
-`npm test` levanta instancias locales propias con puertos dinámicos y una base temporal. Comprueba CRUD, validación, conflicto de integridad y persistencia tras reiniciar. `npm start` escucha en `127.0.0.1:3000` con los valores del ejemplo. En otra ventana, verifica con `Invoke-RestMethod http://127.0.0.1:3000/health`. La base estándar se crea en `backend/db/wooloo.db`.
+## Recorrido de revisión
 
-## Modo exposición
+1. Crea **Viaje Hito 3** con destino **Osorno** y fecha válida.
+2. Agrega **Chillán** como parada. Cierra Wooloo y vuelve a abrir la app.
+3. Abre el mismo viaje y comprueba que conserva Chillán.
+4. Para ensayar un corte durante el guardado, usa la [guía de grabación](GRABAR-PRUEBA-HITO-3.txt). El formulario conserva los datos y permite reintentar después de recuperar la conexión.
 
-Desde `backend/`, ejecuta `npm.cmd run demo` y abre el [monitor Android](http://127.0.0.1:43101/demo/android.html). Se usa otra base, `backend/db/wooloo-demo.db`.
+## Pruebas automatizadas
 
-- **Teléfono físico.** Selecciónalo en Android Studio y ejecuta la variante debug. Con el ADB del SDK, aplica `adb -s SERIAL reverse tcp:43101 tcp:43101`. Sustituye SERIAL por el valor de `adb devices`. Si vinculaste mediante el servidor alternativo del PC, añade `-P 5038` después de `adb` en ambos comandos. Mantén abierto el duplicado del teléfono para proyectarlo.
-- **Emulador.** Ejecuta la variante debug con un AVD. La aplicación apunta a `10.0.2.2:43101`.
-- **Comprobación.** Cuando Wooloo abra, el monitor debe mostrar `GET /api/trips → 200`. Para probar Catálogo o repetir el recorrido de Viajes, importa la colección en Postman. Para `npm start`, cambia `baseUrl` a `http://127.0.0.1:3000`.
+- En `backend/`, ejecuta `npm.cmd ci` y `npm.cmd test` para probar CRUD, errores y persistencia en SQLite.
+- En la raíz, ejecuta `npm.cmd ci`, `npx.cmd playwright install chromium` y `npm.cmd run test:trip-list` para probar los estados de Mis viajes y el reintento del formulario con el puente Android simulado.
 
-Consulta la [guía de siete minutos](docs/GUIA_PRESENTACION.md) para saber qué decir y qué mostrar en cada paso.
+## Documentación
 
-## Antes de subir
+- [Informe final en PDF](docs/INFORME-FINAL-HITO-3.pdf)
+- [Manual de uso e instalación](docs/MANUAL-USO-INSTALACION.md)
+- [Diagramas de arquitectura](docs/ARQUITECTURA-HITO-3.md)
+- [Bitácora de decisiones](docs/BITACORA-HITO-3.md)
+- [Registro de pruebas](REGISTRO-PRUEBA-WINDOWS-11.txt)
 
-Completa los nombres o usuarios GitHub en la portada y el tamaño real del equipo en la decisión de arquitectura. Vuelve a exportar el PDF si editas el informe. Ensaya una instalación en un segundo computador y registra el resultado real. El ensayo en un teléfono conectado al PC valida el cliente móvil, mientras que el ensayo en otro computador verifica la reproducibilidad del entorno. Comparte el repositorio con el docente.
+El APK de depuración está destinado a la demo local. El modo release conserva el almacenamiento local de los viajes.
 
-Para volver a generar el PDF desde los archivos Markdown, instala ReportLab en tu entorno Python y ejecuta `python docs/exportar_pdf.py` desde la raíz.
+## Video promocional
+
+[Ver Video Publicitario Wooloo en YouTube](https://www.youtube.com/watch?v=tJAr1DkLYg4).
+
+Las pruebas de recuperación se incluyen como evidencia complementaria en el [anexo técnico](docs/anexos/ANEXO-TECNICO-FALLOS-Y-SOLUCIONES.txt) y su [video de 27 segundos](docs/anexos/Wooloo-Anexo-Fallos-y-Soluciones.mp4).

@@ -5,13 +5,33 @@
 
 "use strict";
 
+async function refreshSavedTrips() {
+  if (!window.AndroidDemoTrips || tripListStatus === "loading") return;
+  tripListStatus = "loading";
+  renderTripsList();
+  try {
+    tripsData = await loadDemoTrips();
+    activeTripId = tripsData[0]?.id || null;
+    tripListStatus = "ready";
+  } catch {
+    tripListStatus = "error";
+  }
+  renderTripsList();
+}
+
 function startApplication() {
   updateClock();
   setInterval(updateClock, 10000);
   registerLocationEvents();
   ui("tripNameInput").maxLength = 120;
   registerUIActions();
-  restoreTrips();
+  if (window.AndroidDemoTrips) {
+    tripsData = [];
+    activeTripId = null;
+    refreshSavedTrips();
+  } else {
+    restoreTrips();
+  }
   navTo("trips");
 }
 

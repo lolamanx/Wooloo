@@ -45,6 +45,7 @@ function returnToPreviousScreen() {
 }
 
 function navTo(screen, pushHistory = true, keepSession = false) {
+  if (tripFormSaving) return;
   const start = screen === "live";
   if (start) screen = "itinerary";
   if (["itinerary", "stops", "detail"].includes(screen) && !getActiveTrip()) screen = "trips";
@@ -95,6 +96,7 @@ function navTo(screen, pushHistory = true, keepSession = false) {
 }
 
 function goBack() {
+  if (tripFormSaving) return;
   if (!ui("drawerLayer").hidden) closeRouteMenu();
   else if (ui("view-itinerary").classList.contains("active")) switchMainTab("trips");
   else returnToPreviousScreen();
@@ -114,6 +116,7 @@ function syncMainTabs() {
 }
 
 function switchMainTab(screen) {
+  if (tripFormSaving) return;
   if (!["trips", "itinerary"].includes(screen)) return;
   if (ui("view-" + screen).classList.contains("active")) return;
   if (screen === "itinerary" && !getActiveTrip()) return startNewTripFlow();

@@ -73,6 +73,7 @@ let retainedMapSession = false,
   mainScrollTop = 0,
   mapFrame = null;
 
+let tripListStatus = "ready";
 let tripsData = [
   {
     id: "trip-sur-1",

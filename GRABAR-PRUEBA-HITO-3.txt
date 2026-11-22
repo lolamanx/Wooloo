@@ -1,0 +1,49 @@
+WOOLOO · GRABAR LA RECUPERACION DEL FORMULARIO
+=============================================
+
+OBJETIVO
+Mostrar que, si se corta la conexión al guardar, Wooloo avisa y conserva
+nombre, destino y fecha. Al restablecerla, el mismo formulario guarda
+el viaje y el monitor registra POST /api/trips con HTTP 201.
+
+PREPARACION
+1. Extrae todo el ZIP. Conecta y desbloquea el teléfono.
+2. Abre WOOLOO-DEMO.cmd. Instala las herramientas que falten si el iniciador
+   lo solicita. El lanzador instala o actualiza el APK incluido, abre
+   Wooloo y la ventana Wooloo-Android, y muestra el monitor.
+3. Abre http://127.0.0.1:43101/demo/android.html en el PC.
+4. Pon Wooloo-Android y el navegador lado a lado. Comprueba que la app
+   consulta GET /api/trips y que el monitor responde con HTTP 200.
+
+COMANDOS
+Abre PowerShell en la raíz de la carpeta extraída. Los tres comandos
+funcionan con el ADB estándar o alternativo. Si hay varios teléfonos,
+añade -Serial con el identificador que muestra ADB devices.
+
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\CONEXION-PRUEBA.ps1 -Accion Estado
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\CONEXION-PRUEBA.ps1 -Accion Cortar
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\CONEXION-PRUEBA.ps1 -Accion Restaurar
+
+La opción ExecutionPolicy del comando es solo para ese proceso. La prueba
+corta el redireccionamiento del puerto 43101 en el teléfono. El servidor,
+el Wi-Fi y la ventana duplicada siguen activos.
+
+GRABACION
+1. Abre un nuevo viaje. Escribe «Prueba Hito 3 - guardado», selecciona
+   Osorno y deja anotada la fecha que muestra la app.
+2. Pulsa Windows + Mayús + R, selecciona el área que cubra el teléfono y
+   el monitor e inicia la grabación en la Herramienta Recortes de Windows.
+   Si prefieres, abre Recortes y elige Grabar.
+3. Ejecuta el comando Cortar en PowerShell. Pulsa Guardar y continuar.
+   Muestra el aviso «No pudimos comunicarnos con el servidor» y los tres
+   campos que conserva Wooloo. El POST de ese intento no llega al monitor.
+4. Ejecuta Restaurar. Sin salir del formulario, vuelve a pulsar
+   Guardar y continuar. Señala el POST 201 en el monitor y la pantalla de
+   paradas en el teléfono.
+5. Para comprobar la persistencia, agrega Chillán, vuelve a Mis viajes y
+   abre el viaje. Muestra el PUT 200, el GET 200 y Chillán en la respuesta.
+6. Detén la grabación y guarda el clip como Hito3-Guardado-Reintento.mp4.
+   Cuando termines, puedes borrar el viaje ficticio desde Mis viajes.
+
+Si el clip se interrumpe con el túnel cortado, ejecuta Restaurar. No hace
+falta reiniciar el servidor ni la duplicación.

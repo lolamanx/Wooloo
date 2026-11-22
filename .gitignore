@@ -28,3 +28,8 @@ __pycache__/
 # ============ Otros ============
 .DS_Store
 Thumbs.db
+
+# Logs y herramientas extraídas por la demo
+backend/wooloo-demo*.log
+herramientas/scrcpy-*/
+herramientas/*.log

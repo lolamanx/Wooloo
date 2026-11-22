@@ -1,0 +1,31 @@
+WOOLOO · HITO 3 · REGISTRO DE PRUEBA
+===================================
+
+Fecha del registro: 22 de noviembre de 2026.
+Entorno reportado: PC habitual del equipo con Windows 11.
+
+RESULTADOS
+- El integrante informó que el iniciador y el entorno arrancaron bien.
+- El integrante informó que completó correctamente el recorrido previsto.
+- Durante las comprobaciones del prototipo se observó una consulta Android
+  GET /api/trips con HTTP 200 y un POST con HTTP 201 tras recuperar el túnel.
+- En el ensayo de guardado en el Samsung, la app conservó nombre, destino
+  y fecha al cortar ADB y permitió reintentar tras restaurar la conexión.
+
+MATERIAL DE VIDEO ENTREGADO POR EL EQUIPO
+- Grabación 2026-11-22 014821.mp4 (40 segundos).
+- 01-29-02.mp4 (55 segundos).
+
+ALCANCE
+Este registro acredita el ensayo reportado en el PC habitual y las
+comprobaciones técnicas realizadas.
+
+SEGUNDO COMPUTADOR
+- El integrante confirmó que la instalación funcionó sin problemas en
+  otro computador.
+- Windows: Microsoft Windows 11 Pro, versión 10.0.26200, compilación 26200.
+- Node.js: v26.13.0.
+- No se aportó una respuesta separada de /health ni se registraron
+  operaciones del teléfono para este segundo equipo.
+- El resultado de instalación en otro equipo se incorpora como evidencia
+  reportada de ejecución reproducible para el Hito 3.

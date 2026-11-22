@@ -1,0 +1,14 @@
+WOOLOO · HITO 3 · DEMOSTRACION EN WINDOWS
+========================================
+
+1. Extrae todo el ZIP y conecta un teléfono Android autorizado en ADB.
+2. Ejecuta WOOLOO-DEMO.cmd y sigue las instrucciones de la ventana. El
+   iniciador instala herramientas si aceptas la oferta de WinGet, ejecuta
+   la demo y usa el APK debug incluido del Hito 3.
+3. Abre http://127.0.0.1:43101/demo/android.html. El teléfono se duplica
+   en la ventana Wooloo-Android.
+4. Sigue docs/MANUAL-USO-INSTALACION.md para crear un viaje, agregar
+   Chillán y recuperarlo tras reabrir la aplicación.
+5. Usa GRABAR-PRUEBA-HITO-3.txt para demostrar el corte y el reintento.
+
+Para el informe y el estado de los entregables, abre README.md.

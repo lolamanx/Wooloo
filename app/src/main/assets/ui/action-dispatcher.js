@@ -10,6 +10,7 @@ const actions = Object.assign(Object.create(null), {
   navTo: (...a) => navTo(...a),
   goBack: () => goBack(),
   startNewTripFlow: (...a) => startNewTripFlow(...a),
+  refreshSavedTrips: () => refreshSavedTrips(),
   commitTripAndProceed: () => commitTripAndProceed(),
   calculateAndShowItinerary: () => calculateAndShowItinerary(),
   removeStopFromTrip: (...a) => removeStopFromTrip(...a),

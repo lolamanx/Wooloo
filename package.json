@@ -1,0 +1,11 @@
+{
+  "name": "wooloo-hito3",
+  "version": "0.10.0",
+  "private": true,
+  "scripts": {
+    "test:trip-list": "node --test tests/trip-list-states.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

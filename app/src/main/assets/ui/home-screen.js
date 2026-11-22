@@ -118,6 +118,23 @@ function renderTripsList() {
     (a, b) => Date.parse(a.departureISO) - Date.parse(b.departureISO),
   );
   renderHomeCards(sorted);
+  const ready = tripListStatus === "ready";
+  const message = ui("tripListMessage");
+  const notice = ui("tripListNotice");
+  const retry = ui("retryTripList");
+  ui("nextTripContainer").hidden = !ready;
+  notice.hidden = ready;
+  const statusText =
+    tripListStatus === "loading"
+      ? "Cargando tus viajes…"
+      : tripListStatus === "error"
+        ? "No pudimos cargar tus viajes. Comprueba la conexión y vuelve a intentar."
+        : "";
+  if (message.textContent !== statusText) message.textContent = statusText;
+  retry.hidden = tripListStatus !== "error";
+  document.querySelectorAll('button[data-action^="startNewTripFlow("]').forEach((button) => {
+    button.disabled = !ready;
+  });
   const trip = sorted[0];
   if (trip && !routeCache.has(signature(trip))) {
     const note = document.createElement("div");

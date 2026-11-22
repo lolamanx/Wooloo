@@ -1,0 +1,29 @@
+WOOLOO · HITO 3 · ANEXO DE FALLOS Y SOLUCIONES
+==============================================
+
+Video promocional: Wooloo-Promocional-Anuncio.mp4
+Presenta Wooloo, muestra sus pantallas y cierra con su propuesta.
+
+Evidencia complementaria: Wooloo-Anexo-Fallos-y-Soluciones.mp4
+Incluye dos ensayos distintos con grabaciones del teléfono.
+
+00:00–00:11 · CASO 1 · FALLO AL GUARDAR UNA PARADA
+Síntoma: en Configurar paradas, Wooloo informa que no pudo guardar el cambio.
+Solución: restablecer la conexión de la demo y volver a pulsar Añadir.
+Comprobación: Chillán aparece entre las paradas seleccionadas.
+
+00:11–00:27 · CASO 2 · FALLO AL CARGAR MIS VIAJES
+Síntoma: al abrir la app sin conexión, aparece el aviso de carga fallida
+y el botón Reintentar.
+Solución: restaurar el túnel ADB y pulsar Reintentar en la misma pantalla.
+Comprobación: el itinerario que estaba guardado vuelve a la lista.
+
+OTRAS FALLAS DEL ENTORNO
+- Si faltan Node.js o ADB, vuelve a ejecutar WOOLOO-DEMO.cmd y sigue la
+  instalación ofrecida por WinGet. Luego verifica /health en el monitor.
+- Si el teléfono tiene un APK firmado con otra clave, instala una versión
+  compatible. Una desinstalación elimina los datos locales de esa copia.
+  Confirma con el propietario del teléfono antes de hacerlo.
+
+Para reproducir un corte controlado y recuperarlo, consulta
+GRABAR-PRUEBA-HITO-3.txt y docs/MANUAL-USO-INSTALACION.md.

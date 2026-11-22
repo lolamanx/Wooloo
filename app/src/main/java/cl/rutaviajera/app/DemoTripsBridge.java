@@ -7,11 +7,31 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.BiConsumer;
 
 /** Cliente HTTP local para el emulador o un teléfono conectado por ADB. */
 final class DemoTripsBridge {
     private static final String HOST = "ranchu".equals(Build.HARDWARE)
             || "goldfish".equals(Build.HARDWARE) ? "10.0.2.2" : "127.0.0.1";
+    private final ExecutorService requests = Executors.newSingleThreadExecutor();
+    private final BiConsumer<Integer, String> onResponse;
+
+    DemoTripsBridge(BiConsumer<Integer, String> onResponse) {
+        this.onResponse = onResponse;
+    }
+
+    @JavascriptInterface
+    public synchronized void requestAsync(int requestId, String method, String id, String body) {
+        if (!BuildConfig.DEBUG || requests.isShutdown()) return;
+        requests.execute(() -> onResponse.accept(requestId, request(method, id, body)));
+    }
+
+    synchronized void close() {
+        requests.shutdownNow();
+    }
+
     @JavascriptInterface
     public String request(String method, String id, String body) {
         if (!BuildConfig.DEBUG || id == null || body == null || body.length() > 16000
@@ -37,8 +57,11 @@ final class DemoTripsBridge {
                     output.write(body.getBytes(StandardCharsets.UTF_8));
                 }
             }
-            if (connection.getResponseCode() / 100 != 2) return "";
-            try (InputStream input = connection.getInputStream();
+            int status = connection.getResponseCode();
+            InputStream response = status / 100 == 2
+                    ? connection.getInputStream() : connection.getErrorStream();
+            if (response == null) return "";
+            try (InputStream input = response;
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
                 byte[] buffer = new byte[4096];
                 int count;
